@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon mot de passe - La boutique Française{% endblock %}
+
+{% block content %}
+<h1> Modifier votre mot de passe </h1>
+{% if notification %}
+   <div class="alert alert-info">{{notification}}</div> 
+{% endif %}
+    <a href={{path ('app_account')}}>Retourner sur mon compte</a>
+{{form(form)}}
+{% endblock %}
