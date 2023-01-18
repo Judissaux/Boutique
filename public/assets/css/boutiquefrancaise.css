@@ -46,3 +46,45 @@ body{
     font-size: 19px;
     font-weight: bold;
 }
+
+.small-block{
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-check{
+    background: #eaf2fd;
+    padding: 20px 65px;
+    margin-top: 7px;
+}
+
+.col-form-label{
+    font-weight: bold;
+}
+
+.order-summary{
+    background: #eaf2fd;
+    padding: 15px 20px;
+    margin-top: 22px;
+}
+
+.account-item{
+    background-color: #ced6e0;
+    padding: 70px;
+    margin: 10px;
+}
+
+.account-item img{
+    margin-bottom: 20px;
+}
+.account-item a{
+    text-transform: uppercase;
+    text-decoration: none;
+    color:#2f3542 ;    
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.account-item a:hover{
+    color: #57606f;
+}

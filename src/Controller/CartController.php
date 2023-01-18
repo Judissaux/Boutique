@@ -28,8 +28,9 @@ class CartController extends AbstractController
     // Fonction pour ajouter un article on a besoin de l'id produit pour ajouter
     public function add(Cart $cart, $id)
     {
+        
         $cart->add($id);
-
+        
         return $this->redirectToRoute('app_cart');
     }
 

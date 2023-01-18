@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Controller\Classes\Mail;
 
 //Renvoie la vue Inscription
 class RegisterController extends AbstractController
@@ -31,7 +32,8 @@ class RegisterController extends AbstractController
 
      // Injection de dépendance en lui passant l'objet Request qui permet de récupérer les données du $_POST et injection de l'USERPASSWORDHASHER qui va nous permettre de hasher le mdp récupérer
     public function index(Request $request, UserPasswordHasherInterface $encoder): Response
-    {
+    {   
+        $notification = null;
 
         // Ici j'instancie ma classe $user présente dans le dossier Entity
         $user = new User();
@@ -47,22 +49,37 @@ class RegisterController extends AbstractController
             // On rappelle l'objet $user et on lui injecte toute les donnée récupérer via la méthode getData()
             $user = $form->getData();
 
-            // On récupére le password avec la méthode getPassword() et on utilise la méthoe hashPassword acquise grâce à l'interface UserPasswordHasherInterface qui prends 2 paramétres , l'objet et le mot de passe
-            $password = $encoder->hashPassword($user,$user->getPassword());
+            $search_email = $this->entityManager->getRepository(User::class)->findOneByEmail($user->getEmail());
 
-            // Ici on réinjecte le password hasher dans l'objet
-            $user = $user->setPassword($password);
+            if(!$search_email){
+                // On récupére le password avec la méthode getPassword() et on utilise la méthoe hashPassword acquise grâce à l'interface UserPasswordHasherInterface qui prends 2 paramétres , l'objet et le mot de passe
+                $password = $encoder->hashPassword($user,$user->getPassword());
 
-            // Méthode propre à l'ORM Doctrine qui prends un objet en paramètre(fonctionnement : fige les données et les prépare à étre créer en BDD)
-            $this->entityManager->persist($user);
+                // Ici on réinjecte le password hasher dans l'objet
+                $user = $user->setPassword($password);
 
-            //Méthode permettant d'enregistrer les donnée de persist() dans la base de données
-            $this->entityManager->flush();   
+                // Méthode propre à l'ORM Doctrine qui prends un objet en paramètre(fonctionnement : fige les données et les prépare à étre créer en BDD)
+                $this->entityManager->persist($user);
 
+                //Méthode permettant d'enregistrer les donnée de persist() dans la base de données
+                $this->entityManager->flush();   
+                
+                $mail = new mail();
+                $mail->send($user->getEmail(),$user->getFirstname(),'Bienvenue sur la Boutique Française',"Hello ". $user->getFirstname() . " <br><br> Bienvenue dans l'aventure ! ");
+
+                $this->addFlash('notice',"Votre inscription s'est correctement déroulée. Vous pouvez dés à présent vous connecter à votre compte.");
+                
+            }else{
+
+                $this->addFlash('notice',"L'email et/ou le mot de passe que vous avez renseigné existe déjà.");
+               
             }
+            
+        }
         
 
         // route pour accéder au formualire d'inscription et on crée la clef 'form' et on l'associe à la variable précédement créée $form en appelant également pour créer la vue la méthode createView()
-        return $this->render('register/index.html.twig',['form' =>$form->createView()]);
+        return $this->render('register/index.html.twig',[
+            'form' =>$form->createView()]);
     }
 }

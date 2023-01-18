@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Classes\Cart;
 use App\Entity\Address;
 use App\Form\AddressType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,8 @@ class AccountAddressController extends AbstractController
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;    
+        
+;        $this->entityManager = $entityManager;    
     }
     #[Route('/compte/addresses', name: 'app_account_address')]
     public function index(): Response
@@ -26,13 +28,15 @@ class AccountAddressController extends AbstractController
     }
 
     #[Route('/compte/ajouter-une-adresse', name: 'app_address_add')]
-    public function add(Request $request): Response
+    public function add(Cart $cart,Request $request): Response
     {
         // On instancie la class l'entité Address
         $address = new Address;
+        
 
         // On crée le formulaire en récupérant la class AdressType et la class instancié
         $form = $this->createForm(AddressType::class,$address);
+        
 
         $form->handleRequest($request);
 
@@ -40,11 +44,16 @@ class AccountAddressController extends AbstractController
             $address->setUser($this->getUser());
             $this->entityManager->persist($address);
             $this->entityManager->flush();
-            return $this->redirectToRoute('app_account_address');
+            if($cart->get()){
+                return $this->redirectToRoute('app_order');
+            }else{
+                return $this->redirectToRoute('app_account_address');
+            }
+            
         }
 
         // On crée la vue
-        return $this->render('accounform.html.twig',[
+        return $this->render('account/address_form.html.twig',[
             'form' => $form->createView()
         ]);
     }
@@ -77,21 +86,18 @@ class AccountAddressController extends AbstractController
     }
 
     #[Route('/compte/supprimer-une-adresse/{id}', name: 'app_address_delete')]
-    public function delete(Request $request, $id): Response
+    public function delete($id): Response
     {
         // On instancie la class l'entité Address
         $address = $this->entityManager->getRepository(Address::class)->findOneById($id);
 
-        if(!$address || $address->getUser() === $this->getUser()){
+        if($address || $address->getUser() === $this->getUser()){
             $this->entityManager->remove($address);
             $this->entityManager->flush();
         }
-        // On crée le formulaire en récupérant la class AdressType et la class instancié
-        $form = $this->createForm(AddressType::class,$address);
-
-
-            return $this->redirectToRoute('app_account_address');
-        }
+        
+        return $this->redirectToRoute('app_account_address');
+        
 
     }
 }

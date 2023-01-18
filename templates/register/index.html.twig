@@ -2,7 +2,9 @@
 
 {% block content %}
 <h1> Inscription </h1>
-
+{% for message in app.flashes('notice') %}
+    <div class="alert alert-info">{{message}}</div>
+{% endfor %}
 {#Ici on appelle la variable form créer dans le dossier Controller avec la class RegisterController#}
 {{form(form)}}
 {% endblock %}

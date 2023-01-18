@@ -22,15 +22,15 @@ class Cart
     public function add($id)
     {
         $cart = $this->session->get('cart',[]);
-
+        
         if(!empty($cart[$id])){
             $cart[$id]++;
         }else{
             $cart[$id] = 1;
         }
 
-        $this->session->set('cart', $cart);
-           
+        $this->session->set('cart',$cart);
+        
     }
 
     public function get()
@@ -71,18 +71,25 @@ class Cart
     public function getFull()
     {
         $cartComplete = [];
-        foreach($this->get() as $id => $quantity){
+        $cart = $this->session->get('cart',[]);
+        if(!empty($cart)){
+                  
+        foreach($cart as $id => $quantity){
         $product_object = $this->entityManager->getRepository(Product::class)->findOneById($id);
+       
         if(!$product_object){
             $this->delete($id);
+            continue;
         }else{        
             $cartComplete[] = [
                 'product' => $product_object,
                 'quantity' => $quantity
             ];
           }
+         
         }
-
+     } 
+        
         return $cartComplete;
     }
 }

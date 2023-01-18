@@ -35,6 +35,7 @@ class AddressType extends AbstractType
                 ]
             ])
             ->add('company', TextType::class,[
+                'required' => false,
                 'label' => 'Votre société',
                 'attr' => [
                     'placeholder' => '(facultatif)Entrez le nom de votre société'
@@ -73,7 +74,7 @@ class AddressType extends AbstractType
             ->add('submit', SubmitType::class,[
                 'label' => 'Valider',
                 'attr' => [
-                    'class' => ' col-md-12 btn btn-info'
+                    'class' => ' col-md-12 text-white btn btn-info'
                 ]
             ]);
         ;

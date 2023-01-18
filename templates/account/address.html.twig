@@ -3,9 +3,9 @@
 {% block title %}Mes adresses - La Boutique Française{% endblock %}
 
 {% block content %}
-<a href="{{path ('app_address_add')}}" class="btn btn-info btn-sm float-end">Ajouter une adresse</a>
+<a href="{{path ('app_address_add')}}" class="btn btn-info  text-white  btn-sm float-end">Ajouter une adresse</a>
 <h1>Mes adresses</h1>
-<p>C'est dans cet espace que vous allez pouvoi gérer toutes vos adresses</p>
+<p>C'est dans cet espace que vous allez pouvoir gérer toutes vos adresses</p>
 {% if app.user.addresses|length == 0 %}
     <p class="text-center">Vous n'avez pas encore ajouté d'adresse à votre compte client. Pour en ajouter, <a href="{{path ('app_address_add')}}">cliquez ici</a>.</p>
 
@@ -20,8 +20,8 @@
             <h5 class="card-title">{{adress.name}}</h5>
             <p class="card-text">{{adress.address}} <br>
             {{adress.postal}} - {{adress.city}} - {{adress.country}}</p>
-            <a href="{{path ('app_address_edit',{ 'id' : adress.id })}}}">Modifier</a> | <a href="">Supprimer</a>
-            </div>
+            <a href="{{path ('app_address_edit',{ 'id' : adress.id })}}}">Modifier</a> | <a href="{{path('app_address_delete', {'id': adress.id})}}">Supprimer</a>
+            </div>'
         </div>
     </div>
     {% endfor %}   
