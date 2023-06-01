@@ -30,7 +30,7 @@ class CartController extends AbstractController
     {
         
         $cart->add($id);
-        
+               
         return $this->redirectToRoute('app_cart');
     }
 

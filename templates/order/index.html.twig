@@ -4,13 +4,13 @@
 
 {% block content %}
  <h2>Je passe ma commande</h2>
- <p>Choissisez vos préférences avant de paser votre commande sur la Boutique Française.</p>
+ <p>Choisissez vos préférences avant de passer votre commande sur la Boutique Française.</p>
  <hr>
  <div class="row">
     <div class="col-md-6">
         {% set formHtml %}
         {{form_start(form,{action:path('app_order_recap')})}}
-        {{form_label(form.addresses, 'Choissiez votre adresses de livraison')}}
+        {{form_label(form.addresses, 'Choisissez votre adresses de livraison')}}
         <a href="{{path ('app_address_add')}}">Ajouter une nouvelle adresse</a>
         {{form_end(form)}}
         {% endset %}

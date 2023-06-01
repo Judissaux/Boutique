@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\ResetPasswordRepository;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -12,6 +12,7 @@ class Cart
     private $session;
 
     private $entityManager;
+
     //Interface session qui permet d'utiliser les méthodes lié à la session
     public function __construct(EntityManagerInterface $entityManager , SessionInterface $session)
     {
@@ -19,9 +20,10 @@ class Cart
         $this->session = $session;
         $this->entityManager = $entityManager;
     }
+
     public function add($id)
     {
-        $cart = $this->session->get('cart',[]);
+        $cart = $this->session->get('cart', []);
         
         if(!empty($cart[$id])){
             $cart[$id]++;
